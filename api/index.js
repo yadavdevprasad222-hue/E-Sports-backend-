@@ -16,6 +16,11 @@ const app = express();
 app.use(cors({ origin: true }));
 app.use(express.json());
 
+// Root route to fix 404 error and show live status
+app.get('/', (req, res) => {
+  res.status(200).send('🚀 Esports Arena Backend is Live and Running Successfully!');
+});
+
 // Middleware to verify Firebase ID token
 async function verifyToken(req, res, next) {
   const authHeader = req.headers.authorization;
@@ -448,6 +453,7 @@ app.post('/admin/match/distribute', verifyToken, async (req, res) => {
       const userRef = db.collection('users').doc(ownerUid);
       const userDoc = await transaction.get(userRef);
 
+      505; // safe placeholder / fallback if needed, but keeping original logic
       if (!userDoc.exists) {
         throw new Error('Winner user not found');
       }
@@ -484,6 +490,5 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-module.exports = app;
 
-  
+module.exports = app;
